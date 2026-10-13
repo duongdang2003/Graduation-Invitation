@@ -1,0 +1,20 @@
+{
+  "people": [
+    { "id": "2104837", "name": "Anh Thư" },
+
+    { "id": "2209174", "name": "Thảo Nguyên" },
+    { "id": "2216385", "name": "Như Quỳnh" },
+    
+    { "id": "2052749", "name": "Cẩm Vân" },
+
+    { "id": "1084261", "name": "Chí Hiếu" },
+    { "id": "1037958", "name": "Đạt" },
+    { "id": "1062184", "name": "Đạt Khương" },
+    { "id": "1095742", "name": "Ngọc Trường" },
+    { "id": "1048630", "name": "Thanh Trường" },
+    { "id": "1072419", "name": "Minh Thắng" },
+    { "id": "1029865", "name": "Trọng Khải" }
+
+
+  ]
+}

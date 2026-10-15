@@ -55,7 +55,9 @@ function App() {
     const parsedId = readInvitationId(url.searchParams.get('id'))
     if (!parsedId) return
 
-    fetch(asset('/data/invitations.json'))
+    // The guest list changes independently from the app bundle. Add a cache
+    // buster so GitHub Pages/browser caches cannot keep an older list after a deploy.
+    fetch(`${asset('/data/invitations.json')}?v=${Date.now()}`, { cache: 'no-store' })
       .then((response) => response.json() as Promise<InvitationData>)
       .then((data) => {
         const person = data.people.find((entry) => entry.id === parsedId.fullId)

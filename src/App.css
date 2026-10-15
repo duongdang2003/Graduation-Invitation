@@ -9,9 +9,9 @@ html, body, #root, button, img { user-select: none; -webkit-user-select: none; -
 .chest-page::before { display: none; }
 .chest-page::after { box-shadow: inset 0 0 120px 30px rgba(2, 4, 12, .65); }
 .ambient-glow { display: none; }
-.shake-stage { margin: auto; display: flex; }
+.shake-stage { position: absolute; inset: 0; margin: 0; }
 .shake-stage.shake-now { animation: screen-shake .28s ease-out; }
-.shake-stage .chest-button { margin: 0; }
+.shake-stage .chest-button { position: absolute; left: 50%; top: 50%; margin: 0; transform: translate(-50%, -50%); }
 .impact-effect { position: fixed; z-index: 10; width: 160px; height: 160px; object-fit: contain; transform: translate(-50%, -50%); pointer-events: none; image-rendering: pixelated; animation: impact-burst .42s steps(4, end) forwards; }
 .impact-effect.opening-impact { width: 216px; height: 216px; }
 @keyframes screen-shake { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-7px, 3px); } 40% { transform: translate(6px, -3px); } 60% { transform: translate(-4px, -2px); } 80% { transform: translate(3px, 2px); } }
@@ -21,9 +21,9 @@ html, body, #root, button, img { user-select: none; -webkit-user-select: none; -
 .gender-switcher { display: flex; gap: 8px; padding: 6px; margin: 26px 0 0; background: rgba(2,7,16,.55); border: 1px solid rgba(168,195,218,.2); border-radius: 8px; }.gender-switcher button { border: 1px solid transparent; background: transparent; color: #9eaebe; border-radius: 5px; padding: 9px 15px; font-size: 12px; cursor: pointer; transition: .2s ease; }.gender-switcher button:hover, .gender-switcher button.selected { color: #fff; background: rgba(119,188,224,.14); border-color: rgba(126,204,239,.55); }.female .gender-switcher button:hover, .female .gender-switcher button.selected { border-color: rgba(152,229,255,.65); background: rgba(143,224,247,.14); }
 .guest-code { margin-top: 26px; max-width: 620px; color: #a8c5d8; font-size: 11px; letter-spacing: .07em; text-align: center; }
 .chest-button { border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 10px; margin: auto; padding: 0 34px; cursor: pointer; color: #f9d99c; }.chest-button img { width: min(290px, 62vw); image-rendering: pixelated; filter: drop-shadow(0 20px 20px rgba(0,0,0,.5)); transition: transform .25s ease; }.chest-button:hover img { transform: translateY(-6px) scale(1.025); }.chest-button.opening img { transform: scale(1.04); }
-.tap-label { font-family: var(--header-font); font-size: clamp(20px, 3.5vw, 28px); letter-spacing: .12em; animation: pulse 1.8s ease-in-out infinite; }.tap-progress { display: flex; gap: 7px; margin-top: 2px; }.tap-progress i { display: block; width: 7px; height: 7px; border: 1px solid #7ba5be; transform: rotate(45deg); }.tap-progress i.done { background: #91d5ef; box-shadow: 0 0 8px #91d5ef; }.tap-hint { margin: 0; font-size: 12px; color: #8396aa; letter-spacing: .08em; }.chest-page footer { color: #5c6c7c; font-size: 10px; letter-spacing: .1em; margin-top: auto; }
+.tap-label { font-family: var(--header-font); font-size: clamp(20px, 3.5vw, 28px); letter-spacing: .12em; color: #000; animation: pulse 1.8s ease-in-out infinite; }.tap-progress { display: flex; gap: 7px; margin-top: 2px; }.tap-progress i { display: block; width: 7px; height: 7px; border: 1px solid #7ba5be; transform: rotate(45deg); }.tap-progress i.done { background: #91d5ef; box-shadow: 0 0 8px #91d5ef; }.tap-hint { margin: 0; font-size: 12px; color: #8396aa; letter-spacing: .08em; }.chest-page footer { color: #5c6c7c; font-size: 10px; letter-spacing: .1em; margin-top: auto; }
 @keyframes pulse { 0%,100% { opacity: .65; } 50% { opacity: 1; text-shadow: 0 0 15px #f2c37f; } }
-.invitation-page { background: #101827 url('/Graduation-Invitation/Assets/Background/page1.png') center center / cover no-repeat; display: grid; place-items: center; padding: 35px 20px 70px; box-sizing: border-box; image-rendering: pixelated; overflow-y: auto; }.invitation-page::before { display: none; }
+.invitation-page { width: 100%; background: #101827 url('/Graduation-Invitation/Assets/Background/page1.png') center center / cover no-repeat; display: grid; place-items: center; padding: 35px 20px 70px; box-sizing: border-box; image-rendering: pixelated; overflow-y: auto; overflow-x: hidden; }.invitation-page::before { display: none; }
 .page-flash { position: fixed; z-index: 5; inset: 0; background: #fff8de; opacity: 0; pointer-events: none; }.page-flash.active { animation: flash-fade 2s ease-in-out forwards; }
 .compass-icon { position: absolute; z-index: 2; top: 18px; right: 18px; width: 84px; height: 84px; object-fit: contain; image-rendering: pixelated; opacity: .9; }
 .firework { position: absolute; z-index: 3; width: 144px; height: 144px; object-fit: contain; transform: translate(-50%, -50%); pointer-events: none; image-rendering: pixelated; opacity: .5; animation: firework-cycle 2.7s linear forwards; }
@@ -44,17 +44,20 @@ html, body, #root, button, img { user-select: none; -webkit-user-select: none; -
   /* Keep the invitation readable on narrow phones instead of allowing the
      fixed desktop spacing to push the lower content out of the card. */
   .invitation-page {
-    place-items: center;
-    padding: 12px 8px 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0 58px;
   }
   .invitation-card {
-    width: 100%;
+    width: calc(100vw - 24px);
     max-width: 420px;
+    margin: 0 auto;
   }
   .card-inner {
     min-height: 0;
     margin: 10px;
-    padding: 34px 14px 88px;
+    padding: 30px 10px 78px;
   }
   .compass-icon {
     top: 12px;
@@ -66,47 +69,54 @@ html, body, #root, button, img { user-select: none; -webkit-user-select: none; -
     padding: 0 34px 52px 0;
   }
   .invitation-card h1 {
-    font-size: clamp(28px, 8.5vw, 40px);
+    font-size: clamp(24px, 7vw, 34px);
     gap: 0;
   }
   .invitation-card h1 .title-subtitle {
     transform: translateY(24px);
   }
   .event-layout {
-    gap: 24px;
+    gap: 16px;
   }
   .recipient-block,
   .details-block {
     gap: 9px;
   }
   .event-invite {
-    font-size: clamp(16px, 4.8vw, 20px);
+    font-size: clamp(14px, 4vw, 18px);
   }
   .recipient-name {
     max-width: 100%;
-    font-size: clamp(32px, 10vw, 44px) !important;
-    overflow-wrap: anywhere;
+    font-size: 10px !important;
+    line-height: 1;
+    transform: none;
   }
   .event-time {
-    font-size: clamp(13px, 3.8vw, 15px);
+    font-size: clamp(11px, 3.2vw, 13px);
     line-height: 1.35;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .date-time {
     gap: 7px;
     flex-wrap: wrap;
   }
   .date-book-icon {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
   }
   .event-school {
-    font-size: clamp(13px, 3.8vw, 17px);
+    font-size: clamp(11px, 3.1vw, 14px);
     line-height: 1.3;
   }
   .event-location {
-    max-width: 270px;
-    font-size: 11px;
+    max-width: 245px;
+    font-size: 10px;
     line-height: 1.35;
+  }
+  .event-phone {
+    font-size: 10px;
   }
   .character {
     width: auto;
@@ -124,8 +134,9 @@ html, body, #root, button, img { user-select: none; -webkit-user-select: none; -
 .date-time { color: #40383a; font-weight: 600; }
 .date-time span { color: inherit; }
 .event-location { color: #958b86; font-weight: 400; }
+.event-phone { width: 100%; margin: 0; text-align: center; color: #958b86; font-size: 12px; letter-spacing: .08em; line-height: 1.35; }
 .event-layout h2 { margin-top: 5px; margin-bottom: 5px; }
-.recipient-name { font-family: var(--header-font); font-size: clamp(40px, 8vw, 32px) !important; font-weight: 700; letter-spacing: 0px; line-height: 1.1; color: #a93632 !important; text-shadow: none; }
+.recipient-name { font-family: var(--header-font); font-size: clamp(40px, 8vw, 32px) !important; font-weight: 700; letter-spacing: 0px; line-height: 1.1; color: #a93632 !important; text-shadow: none; white-space: nowrap; }
 .character { width: auto; height: 123px; }
 @media (max-width: 520px) { .character { width: auto; height: 100px; } }
 .invitation-card h1 { gap: 0; }
@@ -137,4 +148,13 @@ html, body, #root, button, img { user-select: none; -webkit-user-select: none; -
   .invitation-card h1 .title-subtitle { transform: translateY(24px); }
   .date-time { gap: 7px; }
   .character { width: auto; height: 86px; }
+  .event-layout .recipient-name {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 30px !important;
+  }
 }

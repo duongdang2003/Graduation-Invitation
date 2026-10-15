@@ -104,9 +104,10 @@ function App() {
                 <p className="event-time">đến dự buổi lẽ tốt nghiệp của Hải Đăng</p>
               </div>
               <div className="details-block">
-                <p className="event-time date-time"><span>30/06/2025</span><img className="date-book-icon" src={asset('/Assets/Icons/book.png')} alt="" aria-hidden="true" /><span>09:00 - 12:00</span></p>
-                <p className="event-school">SẢNH C ĐẠI HỌC TÔN ĐỨC THẮNG</p>
+                <p className="event-time date-time"><span>17/06/2025</span><img className="date-book-icon" src={asset('/Assets/Icons/book.png')} alt="" aria-hidden="true" /><span>10:00 - 13:00</span></p>
+                <p className="event-school">SẢNH A ĐẠI HỌC TÔN ĐỨC THẮNG</p>
                 <p className="event-location">(19 Nguyễn Hữu Thọ, Phường Tân Hưng, TPHCM)</p>
+                <p className="event-phone">SĐT: 0765 079 531</p>
               </div>
             </div>
             <img className="character" src={current.character} alt={current.label} />

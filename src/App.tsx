@@ -11,8 +11,8 @@ type Firework = { key: number; x: number; y: number }
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
 
 const assets = {
-  male: { idleChest: asset('/Assets/Chests/MetalChestsIdle.gif'), openChest: asset('/Assets/Chests/MetalChestOpen.gif'), openFinal: asset('/Assets/Chests/MetalChestOpenFinal.png'), character: asset('/Assets/Characters/KnightIdle.gif'), label: 'Hiệp sĩ' },
-  female: { idleChest: asset('/Assets/Chests/IceChestIdle.gif'), openChest: asset('/Assets/Chests/IceChestOpen.gif'), openFinal: asset('/Assets/Chests/IceChestOpenFinal.png'), character: asset('/Assets/Characters/ElfIdle.gif'), label: 'Tiên nữ' },
+  male: { idleChest: asset('/Assets/Chests/MetalChestsIdle.gif'), openSheet: asset('/Assets/Chests/MetalChestOpen.png'), openFinal: asset('/Assets/Chests/MetalChestOpenFinal.png'), character: asset('/Assets/Characters/KnightIdle.gif'), label: 'Hiệp sĩ' },
+  female: { idleChest: asset('/Assets/Chests/IceChestIdle.gif'), openSheet: asset('/Assets/Chests/IceChestOpen.png'), openFinal: asset('/Assets/Chests/IceChestOpenFinal.png'), character: asset('/Assets/Characters/ElfIdle.gif'), label: 'Tiên nữ' },
 }
 
 function readInvitationId(id: string | null) {
@@ -42,7 +42,6 @@ function App() {
   const [screen, setScreen] = useState<Screen>('chest')
   const [tapCount, setTapCount] = useState(0)
   const [recipientName, setRecipientName] = useState('THẢO NGUYÊN')
-  const [chestFrozen, setChestFrozen] = useState(false)
   const [impact, setImpact] = useState<Impact | null>(null)
   const [shakeKey, setShakeKey] = useState(0)
   const [transitionStartedAt, setTransitionStartedAt] = useState<number | null>(null)
@@ -73,14 +72,25 @@ function App() {
     setTapCount(nextCount)
     if (nextCount === 3) {
       openingStarted.current = true
-      const startedAt = Date.now()
-      setTransitionStartedAt(startedAt)
       setFlashElapsed(0)
       setFirework(null)
-      setChestFrozen(false)
       setScreen('opening')
-      window.setTimeout(() => setChestFrozen(true), 550)
-      window.setTimeout(() => { setFlashElapsed(1000); setScreen('invite') }, 1000)
+
+      // Start the flash as soon as the 550ms sprite animation reaches its
+      // final frame.
+      window.setTimeout(() => {
+        setTransitionStartedAt(Date.now())
+        setFlashElapsed(0)
+        // Fade to white for 1s while keeping the chest page visible. Only
+        // switch pages once the flash has reached full brightness.
+        window.setTimeout(() => {
+          setFlashElapsed(1000)
+          setScreen('invite')
+          // Let the new page mount under a solid white overlay first, then
+          // resume the fade-out on the next frame to avoid a one-frame blink.
+          window.setTimeout(() => setFlashElapsed(1001), 16)
+        }, 1000)
+      }, 550)
       window.setTimeout(() => { setFlashElapsed(2000); setFirework(randomFirework(Date.now())) }, 2000)
     }
   }
@@ -88,7 +98,7 @@ function App() {
   if (screen === 'invite') {
     return (
       <main className={`invitation-page ${gender}`}>
-        {transitionStartedAt && <div className="page-flash active" style={{ animationDelay: `${-flashElapsed}ms` }} aria-hidden="true" />}
+        {transitionStartedAt && <div className="page-flash active" style={flashElapsed === 1000 ? { animation: 'none', opacity: 1 } : { animationDelay: `${-flashElapsed}ms` }} aria-hidden="true" />}
         {firework && <img className="firework" key={firework.key} src={asset('/Assets/VFX/firework.gif')} alt="" style={{ left: firework.x, top: firework.y }} onAnimationEnd={() => setFirework(randomFirework(Date.now()))} />}
         <article className="invitation-card">
           <div className="card-inner">
@@ -125,7 +135,11 @@ function App() {
       <div className={`shake-stage ${shakeKey ? 'shake-now' : ''}`} key={shakeKey}>
         <button className={`chest-button ${screen === 'opening' ? 'opening' : ''}`} type="button" onClick={(event) => { event.stopPropagation(); handleTap(event) }} aria-label={`Mở rương, lần chạm ${tapCount} trên 3`}>
           <span className="tap-label">CHẠM ĐỂ MỞ</span>
-          <img src={screen === 'opening' ? (chestFrozen ? current.openFinal : current.openChest) : current.idleChest} alt={`${current.label} chest`} />
+          {screen === 'opening' ? (
+            <span className="chest-open-sprite" style={{ backgroundImage: `url(${current.openSheet})` }} role="img" aria-label={`${current.label} chest opening`} />
+          ) : (
+            <img src={current.idleChest} alt={`${current.label} chest`} />
+          )}
         </button>
       </div>
     </main>

@@ -1,7 +1,8 @@
 @font-face { font-family: 'SVN'; src: url('/Graduation-Invitation/Assets/Fonts/SVN-Determination-Sans.otf') format('opentype'); font-display: swap; }
 @font-face { font-family: 'FVF'; src: url('/Graduation-Invitation/Assets/Fonts/FVF Fernando 08.ttf') format('truetype'); font-display: swap; }
 :root { --header-font: 'SVN', 'Courier New', monospace; --body-font: 'FVF', Arial, sans-serif; }
-button { font: inherit; }
+button { font: inherit; -webkit-tap-highlight-color: transparent; }
+html, body, #root, button, img { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .chest-page, .invitation-page { min-height: 100svh; overflow: hidden; position: relative; isolation: isolate; }
 .chest-page { background: #101827 url('/Graduation-Invitation/Assets/Background/page1.png') center center / cover no-repeat; color: #f6f0e5; display: flex; flex-direction: column; align-items: center; padding: 46px 24px 28px; box-sizing: border-box; cursor: pointer; }
 .chest-page::before, .chest-page::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: -1; }
@@ -43,7 +44,7 @@ button { font: inherit; }
   /* Keep the invitation readable on narrow phones instead of allowing the
      fixed desktop spacing to push the lower content out of the card. */
   .invitation-page {
-    place-items: start center;
+    place-items: center;
     padding: 12px 8px 58px;
   }
   .invitation-card {

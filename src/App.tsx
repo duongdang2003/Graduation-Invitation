@@ -112,7 +112,6 @@ function App() {
             <img className="character" src={current.character} alt={current.label} />
           </div>
         </article>
-        <button className="back-button" type="button" onClick={() => { openingStarted.current = false; setFirework(null); setTransitionStartedAt(null); setFlashElapsed(0); setScreen('chest'); setTapCount(0) }}>↺ Mở lại từ đầu</button>
       </main>
     )
   }

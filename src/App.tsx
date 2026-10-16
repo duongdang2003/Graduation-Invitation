@@ -16,14 +16,15 @@ const assets = {
 }
 
 function readInvitationId(id: string | null) {
-  if (!id || !/^[12][012]\d{5}$/.test(id)) return null
-  const gender = id[0] === '1' ? 'male' as const : 'female' as const
+  if (!id || !/^[012][012]\d{5}$/.test(id)) return null
+  // IDs beginning with 0 use the male theme and the male ANH/EM salutation.
+  const gender = id[0] === '0' || id[0] === '1' ? 'male' as const : 'female' as const
   const relationshipCode = id[1]
   const isOlder = id[1] === '1'
   return {
     fullId: id,
     gender,
-    salutation: relationshipCode === '0' ? 'BẠN' : gender === 'male' ? (isOlder ? 'ANH' : 'EM') : (isOlder ? 'CHỊ' : 'EM'),
+    salutation: id[0] === '0' ? 'ANH EM' : relationshipCode === '0' ? 'BẠN' : gender === 'male' ? (isOlder ? 'ANH' : 'EM') : (isOlder ? 'CHỊ' : 'EM'),
     personCode: id.slice(2),
   }
 }
